@@ -6,6 +6,7 @@ const App = () => {
     <>
       <h1>TODO REACT + TYPESCRIPT</h1>
       <AddToDo/>
+      <h2>helloo</h2>
 
     </>
     
