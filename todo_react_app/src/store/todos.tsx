@@ -24,7 +24,14 @@ export const todosContext=createContext<TodosContex | null>(null);
 //childern is the entire application, type of children is discussed above
 
 export const TodosProvider=({children}:TodosProviderProps)=>{
-    const [todos,setTodos]=useState<Todo[]>([])
+    const [todos,setTodos]=useState<Todo[]>(()=>{
+        try{
+            const newTodos=localStorage.getItem("todos")||"[]";
+            return JSON.parse(newTodos) as Todo[];
+        }catch(error){
+            return []
+        }
+    })
 
     const  handleAddTodo=(task:string)=>{
         setTodos((prev)=>{
@@ -38,6 +45,7 @@ export const TodosProvider=({children}:TodosProviderProps)=>{
                 console.log("previous todos"+ prev);
                 console.log(newTodos);
 
+                localStorage.setItem("todos",JSON.stringify(newTodos));
                 return newTodos;
         })
     }
@@ -51,6 +59,7 @@ export const TodosProvider=({children}:TodosProviderProps)=>{
                 }
                 return  todo;
             })
+            localStorage.setItem("todos",JSON.stringify(newTodos));
             return newTodos;
         })
 
@@ -60,6 +69,7 @@ export const TodosProvider=({children}:TodosProviderProps)=>{
     const handleDeleteTodo=(id:String)=>{
         setTodos((prev)=>{
         let newTodos=prev.filter((filterTodo)=>filterTodo.id!==id);
+        localStorage.setItem("todos",JSON.stringify(newTodos));
         return newTodos;
 
 
